@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <title>Skattelotteriet 2026 – Wheel of Misfortune</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #050816;
+      --card: #0b1020;
+      --accent: #ffd94a;
+      --accent-soft: rgba(255, 217, 74, 0.14);
+      --text: #f7f7ff;
+      --muted: #a4a7c0;
+      --danger: #ff4e6a;
+      --border-subtle: rgba(255,255,255,0.08);
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.6);
+      --radius-xl: 1.5rem;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #141b3a 0, #050816 55%, #020308 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.25rem;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    @media (max-width: 800px) {
+      .page {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, #20274a 0, #0b1020 50%);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(14px);
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(7, 12, 40, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-eyebrow span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 9px rgba(255, 217, 74, 0.9);
+    }
+
+    .hero-title {
+      font-size: clamp(2rem, 3vw, 2.6rem);
+      line-height: 1.1;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-title span.highlight {
+      color: var(--accent);
+    }
+
+    .hero-subtitle {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.98rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-subtitle strong {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .pill {
+      font-size: 0.8rem;
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(3, 7, 30, 0.9);
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
+
+    .pill span.bullet {
+      font-size: 0.95em;
+    }
+
+    .notice {
+      background: linear-gradient(
+        135deg,
+        rgba(255, 217, 74, 0.08),
+        rgba(255, 78, 106, 0.06)
+      );
+      border-radius: 1rem;
+      padding: 0.9rem 1rem;
+      border: 1px solid rgba(255, 217, 74, 0.32);
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .notice-icon {
+      font-size: 1.1rem;
+      margin-top: 0.05rem;
+    }
+
+    .notice strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Wheel section */
+
+    .wheel-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1.25rem;
+      background: radial-gradient(circle at top, #18213e 0, #090f1f 50%);
+    }
+
+    .wheel-wrapper {
+      position: relative;
+      width: min(260px, 70vw);
+      height: min(260px, 70vw);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pointer {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-bottom: 22px solid var(--accent);
+      filter: drop-shadow(0 0 8px rgba(255, 217, 74, 0.7));
+      z-index: 3;
+    }
+
+    .wheel {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.18), transparent 55%),
+        conic-gradient(
+          from 0deg,
+          rgba(255, 217, 74, 0.06) 0 60deg,
+          rgba(255, 217, 74, 0.16) 60deg 120deg,
+          rgba(255, 217, 74, 0.06) 120deg 180deg,
+          rgba(255, 217, 74, 0.16) 180deg 240deg,
+          rgba(255, 217, 74, 0.06) 240deg 300deg,
+          rgba(255, 217, 74, 0.22) 300deg 360deg
+        );
+      border: 3px solid rgba(255,255,255,0.4);
+      box-shadow:
+        0 16px 30px rgba(0,0,0,0.8),
+        inset 0 0 18px rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transform: rotate(0deg);
+    }
+
+    .wheel::before {
+      content: "";
+      position: absolute;
+      inset: 18%;
+      border-radius: 50%;
+      background: radial-gradient(circle at top, #1b233f, #050814 75%);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .wheel-center {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 20%, #ffffff, #ffd94a);
+      border: 3px solid #11121d;
+      box-shadow:
+        0 0 12px rgba(255, 217, 74, 0.8),
+        0 0 40px rgba(255, 217, 74, 0.4);
+      z-index: 2;
+    }
+
+    .wheel-center-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #11121d;
+    }
+
+    .wheel-label-big {
+      position: relative;
+      z-index: 1;
+      font-size: 2.25rem;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-shadow:
+        0 0 12px rgba(0,0,0,0.9),
+        0 0 24px rgba(0,0,0,0.9);
+      color: var(--danger);
+    }
+
+    .wheel-ring-text {
+      position: absolute;
+      inset: 8%;
+      border-radius: 50%;
+      font-size: 0.63rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0.3rem;
+      pointer-events: none;
+    }
+
+    .wheel-ring-text span {
+      max-width: 80%;
+    }
+
+    .wheel-caption {
+      font-size: 0.95rem;
+      color: var(--muted);
+      max-width: 18rem;
+    }
+
+    .wheel-caption strong {
+      color: #fff;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 0.8rem 1.7rem;
+      font-size: 0.98rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 0.3rem;
+      background: radial-gradient(circle at top, #ffd94a, #ffb347);
+      color: #1a1020;
+      box-shadow:
+        0 10px 20px rgba(0,0,0,0.6),
+        0 0 16px rgba(255, 217, 74, 0.65);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out, filter 0.12s ease-out;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 14px 26px rgba(0,0,0,0.75),
+        0 0 18px rgba(255, 217, 74, 0.9);
+      filter: brightness(1.03);
+    }
+
+    .btn:active {
+      transform: translateY(1px) scale(0.98);
+      box-shadow:
+        0 8px 16px rgba(0,0,0,0.8),
+        0 0 10px rgba(255, 217, 74, 0.7);
+    }
+
+    .btn span.icon {
+      font-size: 1.05rem;
+    }
+
+    .result {
+      min-height: 1.4em;
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-top: 0.6rem;
+    }
+
+    .result strong {
+      color: var(--danger);
+    }
+
+    .meta {
+      margin-top: 1.8rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      border-top: 1px dashed rgba(255,255,255,0.12);
+      padding-top: 0.9rem;
+    }
+
+    .meta p:not(:last-child) {
+      margin-bottom: 0.35rem;
+    }
+
+    .meta code {
+      font-size: 0.78rem;
+      background: rgba(0,0,0,0.45);
+      padding: 0.15rem 0.4rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .tagline {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.6rem;
+    }
+
+    .tagline strong {
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="card">
+      <div class="hero-eyebrow">
+        <span class="dot"></span>
+        Eksperimentelt skattesystem · 2026
+      </div>
+      <h1 class="hero-title">
+        Skattelotteriet <span class="highlight">for unge</span>
+      </h1>
+      <p class="hero-subtitle">
+        100&nbsp;000 «heldige» mellom 20–35 kan få <strong>125&nbsp;000 kr i arbeidsfradrag</strong> – men bare hvis algoritmen liker deg.
+        Hvor rettferdig føles det på en skala fra «meh» til «lotto med skattemoral»?
+      </p>
+
+      <div class="pill-list">
+        <span class="pill"><span class="bullet">🎰</span> Skatt som underholdning</span>
+        <span class="pill"><span class="bullet">🧪</span> Politisk A/B-testing</span>
+        <span class="pill"><span class="bullet">🤷‍♂️</span> Likhet for loven-ish</span>
+        <span class="pill"><span class="bullet">📊</span> Statistisk rettferdig, personlig uflaks</span>
+      </div>
+
+      <div class="notice">
+        <div class="notice-icon">⚠️</div>
+        <div>
+          <strong>Disclaimer:</strong> Denne siden er satire.<br />
+          Hvis du faktisk tror staten gir deg fradrag fordi du traff riktig på jackpot-hjulet her,
+          bør du kanskje kontakte <em>Skatteetaten</em> – ikke en HTML-fil.
+        </div>
+      </div>
+
+      <div class="meta">
+        <p><strong>Regler for «Skattelotteriet» (uoffisiell versjon):</strong></p>
+        <p>1. Du må være mellom 20 og 35.<br />
+           2. Du må jobbe, men ikke for mye og ikke for lite.<br />
+           3. Utfallet avgjøres av <code>Math.random()</code>*<br />
+           4. *Men her er det hardkodet til <strong>NEI</strong>. Akkurat som følelsen.</p>
+      </div>
+    </section>
+
+    <section class="card wheel-card">
+      <div class="wheel-wrapper">
+        <div class="pointer"></div>
+
+        <div class="wheel" id="wheel">
+          <div class="wheel-ring-text">
+            <span>
+              100 000 vinnere · 20–35 år · Arbeidsfradrag · Inntekt 120 000–345 000 kr ·
+              Statistisk rettferdig, individuelt urettferdig · Forsøk på politikk med jackpot-følelse
+            </span>
+          </div>
+
+          <div class="wheel-center">
+            <div class="wheel-center-label">
+              2026
+            </div>
+          </div>
+
+          <div class="wheel-label-big">
+            NEI
+          </div>
+        </div>
+      </div>
+
+      <p class="wheel-caption">
+        <strong>Spin to win*</strong> – og finn ut om du får arbeidsfradrag.<br />
+        <span style="font-size:0.8em; opacity:0.9;">*Statlig godkjent skuffelse-simulator.</span>
+      </p>
+
+      <button class="btn" id="spinButton">
+        <span class="icon">🔄</span>
+        SPINN HJULET
+      </button>
+
+      <p class="result" id="resultText"></p>
+
+      <p class="tagline">
+        Spoiler: <strong>Du vinner ikke</strong>. Men du betaler fortsatt skatt. 🇳🇴
+      </p>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const wheel = document.getElementById("wheel");
+      const spinButton = document.getElementById("spinButton");
+      const resultText = document.getElementById("resultText");
+
+      let isSpinning = false;
+      let rotation = 0;
+
+      function spin() {
+        if (isSpinning) return;
+        isSpinning = true;
+
+        // Nullstill tekst
+        resultText.textContent = "Spinner frem din statistisk ubetydelige sjanse …";
+
+        // Alltid NEI: vi bare legger til hele runder, slik at hjulet ender på samme vinkel hver gang
+        const extraTurns = 4 + Math.floor(Math.random() * 3); // 4–6 runder
+        rotation += 360 * extraTurns;
+
+        wheel.style.transition = "transform 2.7s cubic-bezier(0.19, 1, 0.22, 1)";
+        wheel.style.transform = `rotate(${rotation}deg)`;
+
+        // Etter animasjonen: vis «NEI»
+        setTimeout(() => {
+          resultText.innerHTML =
+            "<strong>NEI.</strong> Du ble dessverre kontrollgruppe i demokratiets A/B-test. 😅";
+          isSpinning = false;
+        }, 2800);
+      }
+
+      spinButton.addEventListener("click", spin);
+    })();
+  </script>
+</body>
+</html>
