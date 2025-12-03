@@ -2,7 +2,7 @@
 <html lang="no">
 <head>
   <meta charset="UTF-8" />
-  <title>Skattelotteriet 2026 – Det kan jo bli litt urettferdig</title>
+  <title>Skattelotteriet 2026 – Wheel of Misfortune</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
@@ -204,15 +204,6 @@
     .tagline strong { color: var(--accent); }
   </style>
 </head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-C8CH7NP8TS"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-C8CH7NP8TS');
-</script>
 <body>
   <main class="page">
     <section class="card">
@@ -284,7 +275,17 @@
         wheel.style.transform = `rotate(${rotation}deg)`;
 
         setTimeout(() => {
-          result.innerHTML = "<strong>NEI.</strong> Du er kontrollgruppen.";
+          const messages = [
+            "<strong>NEI.</strong> Du er kontrollgruppen.",
+            "I følge våre skattekalkulasjoner tror vi at du kanskje har tjent en ørliten granne for mye. Vil du prøve igjen?",
+            "Du er dessverre ikke plukket ut. Ikke ring oss, vi ringer deg.",
+            "Ja, se der. Det var nært. Du ble nummer 100 001. Vil du prøve igjen?",
+            "Du er med å bygge landet, men det ble dessverre ingen gevinst. Vil du prøve igjen?",
+            "Vi er nå trygge fra eksterne terrortrussler. Det ble nesten gevinst.",
+            "Takk for ditt bidrag.",
+            "Prøv igjen."
+          ];
+          result.innerHTML = messages[Math.floor(Math.random() * messages.length)];
           spinning = false;
         }, 2600);
       }
