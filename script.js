@@ -34,5 +34,14 @@
     }, 2600);
   }
 
-  btn.addEventListener("click", spin);
+    btn.addEventListener("click", function () {
+        if (typeof gtag === "function") {
+            gtag("event", "spin_button_click", {
+                button_name: "SPINN HJULET",
+                page_path: window.location.pathname
+            });
+        }
+
+        spin();
+    });
 })();
