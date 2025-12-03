@@ -25,7 +25,7 @@
         "Du er dessverre ikke plukket ut. Ikke ring oss, vi ringer deg.",
         "Ja, se der. Det var nært. Du ble nummer 100 001. Vil du prøve igjen?",
         "Du er med å bygge landet, men det ble dessverre ingen gevinst. Vil du prøve igjen?",
-        "Vi er nå trygge fra eksterne terrortrussler. Det ble nesten gevinst.",
+          "Det ble neste gevinst",
         "Takk for ditt bidrag.",
         "Prøv igjen."
       ];
