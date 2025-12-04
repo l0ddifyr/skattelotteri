@@ -20,7 +20,7 @@
 
     setTimeout(() => {
       const messages = [
-        "<strong>NEI.</strong> Du er kontrollgruppen.",
+        "<strong>NEI.</strong> Du er i kontrollgruppen.",
         "I følge våre skattekalkulasjoner tror vi at du kanskje har tjent en ørliten granne for mye. Vil du prøve igjen?",
         "Du er dessverre ikke plukket ut. Ikke ring oss, vi ringer deg.",
         "Ja, se der. Det var nært. Du ble nummer 100 001. Vil du prøve igjen?",
