@@ -19,17 +19,48 @@
     wheel.style.transform = `rotate(${rotation}deg)`;
 
     setTimeout(() => {
-      const messages = [
-        "<strong>NEI.</strong> Du er i kontrollgruppen.",
-        "I følge våre skattekalkulasjoner tror vi at du kanskje har tjent en ørliten granne for mye. Vil du prøve igjen?",
-        "Du er dessverre ikke plukket ut. Ikke ring oss, vi ringer deg.",
-        "Ja, se der. Det var nært. Du ble nummer 100 001. Vil du prøve igjen?",
-        "Du er med å bygge landet, men det ble dessverre ingen gevinst. Vil du prøve igjen?",
-          "Det ble neste gevinst",
-        "Takk for ditt bidrag.",
-        "Prøv igjen."
-      ];
-      result.innerHTML = messages[Math.floor(Math.random() * messages.length)];
+        const resultTexts = {
+            polite: [
+                "<strong>NEI.</strong> Takk for interessen.",
+                "Du er dessverre ikke blant de utvalgte denne gangen.",
+                "Vi beklager, men lykken var ikke med deg i dag."
+            ],
+            sarcastic: [
+                "Ja, se der ja. Det var jo nesten.",
+                "Du ble nummer 100 001. Tett på!",
+                "Oi. SÅ nær. Eller… ikke.",
+                "Systemet vurderte deg lenge. I ca. 0,2 millisekunder."
+            ],
+            dark: [
+                "Du er i kontrollgruppen. Gratulerer med det.",
+                "Vi ser potensialet ditt. Ikke i dag, da.",
+                "Håp er dessverre ikke en skattegodkjent valuta.",
+                "Resultatet var allerede bestemt."
+            ],
+            passiveAggressive: [
+                "Ikke ring oss. Vi kommer definitivt ikke til å ringe deg.",
+                "Dette er nok til ditt eget beste.",
+                "Du har sikkert andre muligheter i livet. Antakelig.",
+                "Staten setter pris på deg. Bare ikke økonomisk."
+            ],
+            bureaucratic: [
+                "Du oppfyller ikke kriteriene slik vi tolker dem i dag.",
+                "Du kvalifiserer nesten, på en måte, teknisk sett.",
+                "Dette er innenfor forventet utfallsrom.",
+                "Resultatet er i henhold til våre interne retningslinjer."
+            ]
+        };
+
+        const allMessages = Object.values(resultTexts).flat();
+
+        function biasedRandomIndex(max) {
+            const rand = Math.random();
+            return Math.floor(Math.pow(rand, 2) * max);
+        }
+
+        const message = allMessages[biasedRandomIndex(allMessages.length)];
+
+        result.innerHTML = `<strong>NEI.</strong><br>${message}`;
       spinning = false;
     }, 2600);
   }
