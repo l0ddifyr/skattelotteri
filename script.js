@@ -41,8 +41,9 @@
                 "Vi ser potensialet ditt. Ikke i dag, da.",
                 "Håp er dessverre ikke en skattegodkjent valuta.",
                 "Resultatet var allerede bestemt.",
-                "Du står på rulleski",
-                "Du kaster matavfallet i restavfallet"
+                "Du står på rulleski.",
+                "Du kaster matavfallet i restavfallet.",
+                "Du har gitt sukker til mindreårige."
             ],
             passiveAggressive: [
                 "Ikke ring oss. Vi kommer definitivt ikke til å ringe deg.",
